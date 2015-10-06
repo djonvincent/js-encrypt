@@ -72,7 +72,6 @@ angular.module('encryptor', [])
       if(matcheditems.length > 0){
          var index = this.itemlist.indexOf(matcheditems[0]);
          this.itemlist.splice(index, 1);
-         alert("encryptorstore." + matcheditems[0].name);
          localStorage.removeItem("encryptorstore." + matcheditems[0].name);
       }
    };
