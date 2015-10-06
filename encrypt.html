@@ -15,7 +15,7 @@
       <label>Text</label><br>
       <textarea rows="5" ng-model="ec.text"></textarea><br>
       <br><br>
-      <select size="5" name="itemlist" multiple="yes" ng-model="ec.selecteditem">
+      <select name="itemlist" ng-model="ec.selecteditem">
          <option ng-repeat="item in ec.itemlist">{{item.name}}</option>
       </select>
       <br><br>

@@ -49,7 +49,7 @@ angular.module('encryptor', [])
       // Find all items with the same name as the user selection 
       // in the item list
       var matcheditems = $.grep(this.itemlist, function(e){
-         return e.name === parent.selecteditem[0];
+         return e.name === parent.selecteditem;
       });
       if(matcheditems.length > 0){
          try {
