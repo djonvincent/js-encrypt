@@ -3,34 +3,23 @@
    <head>
       <title>JS Encrypt</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.js"></script>
       <script src="sjcl.js"></script>
+      <script src="app.js"></script>
    </head>
-   <body>
+   <body ng-app="encryptor" ng-controller="EncryptController as ec">
       <label>Title</label><br>
-      <input type="text" name="title"><br>
+      <input type="text" name="title" ng-model="ec.name"><br>
       <label>Password</label><br>
-      <input type="text" name="password"><br>
+      <input type="password" name="password" ng-model="ec.password"><br>
       <label>Text</label><br>
-      <textarea rows="5"></textarea><br>
-      <button name="store">Store</button>
-      <button name="get">Get</button>
-      <script>
-         $(document).ready(function(){
-               $('button[name="store"]').click(function(){
-                  var title = $('input[name="title"]').val();
-                  var text = $('textarea').val();
-                  var password = $('input[name="password"]').val();
-                  var encrypted = sjcl.encrypt(password, text);
-                  localStorage.setItem(title, encrypted);
-               });
-               $('button[name="get"]').click(function(){
-                  var title = $('input[name="title"]').val();
-                  var password = $('input[name="password"]').val();
-                  var encrypted = localStorage.getItem(title);
-                  var decrypted = sjcl.decrypt(password, encrypted);
-                  $('textarea').val(decrypted);
-               });
-         });
-      </script>
+      <textarea rows="5" ng-model="ec.text"></textarea><br>
+      <br><br>
+      <select name="itemlist" ng-model="ec.selecteditem">
+         <option ng-repeat="item in ec.itemlist">{{item.name}}</option>
+      </select>
+      <br><br>
+      <button name="store" ng-click="ec.store()">Store</button>
+      <button name="get" ng-click="ec.get()">Get</button>
    </body>
 </html>
