@@ -1,5 +1,5 @@
 angular.module('encryptor', [])
-.controller('EncryptController', function() {
+.controller('EncryptController', ["CryptoService", function(CryptoService) {
    // Controller variables linked to the DOM
    this.name = "";
    this.password = "";
@@ -27,7 +27,7 @@ angular.module('encryptor', [])
          window.alert("Provide a password");
          return;
       }
-      var encrypted = sjcl.encrypt(this.password, this.text);
+      var encrypted = CryptoService.encrypt(this.password, this.text)
       this.itemlist.push({
          name: this.name,
          text: encrypted
@@ -53,7 +53,7 @@ angular.module('encryptor', [])
       });
       if(matcheditems.length > 0){
          try {
-            var itemtext = sjcl.decrypt(this.password,
+            var itemtext = CryptoService.decrypt(this.password,
                matcheditems[0].text);
             this.name = matcheditems[0].name;
             this.text = itemtext;
@@ -75,4 +75,15 @@ angular.module('encryptor', [])
          localStorage.removeItem("encryptorstore." + matcheditems[0].name);
       }
    };
-});
+}]).factory("CryptoService", [function(){
+   return {
+      encrypt: function(key, data){
+         var encrypted = sjcl.encrypt(key, data);
+         return encrypted;
+      },
+      decrypt: function(key, data){
+         var decrypted = sjcl.decrypt(key, data);
+         return decrypted;
+      }
+   };
+}]);
