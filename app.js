@@ -23,11 +23,13 @@ angular.module('encryptor', [])
 
    // Storage
    this.store = function(){
-      if(this.password === ""){
-         window.alert("Provide a password");
+      try {
+         var encrypted = CryptoService.encrypt(this.password, this.text);
+      }catch(e){
+         window.alert(e);
+         console.log(e);
          return;
       }
-      var encrypted = CryptoService.encrypt(this.password, this.text)
       this.itemlist.push({
          name: this.name,
          text: encrypted
@@ -57,8 +59,9 @@ angular.module('encryptor', [])
                matcheditems[0].text);
             this.name = matcheditems[0].name;
             this.text = itemtext;
-         } catch(err) {
-            window.alert("Incorrect password");
+         } catch(e) {
+            console.log(e);
+            window.alert(e);
          }
       }
       this.password = "";
@@ -78,12 +81,24 @@ angular.module('encryptor', [])
 }]).factory("CryptoService", [function(){
    return {
       encrypt: function(key, data){
-         var encrypted = sjcl.encrypt(key, data);
-         return encrypted;
+         if(key){
+            var encrypted = sjcl.encrypt(key, data);
+            return encrypted;
+         }else{
+            throw "CryptoService.NoKey";
+         }
       },
       decrypt: function(key, data){
-         var decrypted = sjcl.decrypt(key, data);
-         return decrypted;
+         if(key){
+            try{
+               var decrypted = sjcl.decrypt(key, data);
+               return decrypted;
+            }catch(e){
+               throw "CryptoService.IncorrectKey";
+            }
+         }else{
+            throw "CryptoService.NoKey";
+         }
       }
    };
 }]);
